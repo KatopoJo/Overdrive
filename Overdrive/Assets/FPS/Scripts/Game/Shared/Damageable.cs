@@ -12,6 +12,8 @@ namespace Unity.FPS.Game
 
         public Health Health { get; private set; }
 
+        bool isShielding;
+
         void Awake()
         {
             // find the health component either at the same level, or higher in the hierarchy
@@ -20,6 +22,17 @@ namespace Unity.FPS.Game
             {
                 Health = GetComponentInParent<Health>();
             }
+            isShielding = false;
+        }
+
+        public void ShieldOn()
+        {
+            isShielding = true;
+        }
+
+        public void ShieldOff()
+        {
+            isShielding = false;
         }
 
         public void InflictDamage(float damage, bool isExplosionDamage, GameObject damageSource)
@@ -27,6 +40,8 @@ namespace Unity.FPS.Game
             if (Health)
             {
                 var totalDamage = damage;
+
+                if (isShielding) totalDamage *= -0.5f;
 
                 // skip the crit multiplier if it's from an explosion
                 if (!isExplosionDamage)

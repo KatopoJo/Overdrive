@@ -23,6 +23,7 @@ namespace Unity.FPS.Gameplay
         GameFlowManager m_GameFlowManager;
         PlayerCharacterController m_PlayerCharacterController;
         bool m_FireInputWasHeld;
+        bool is_aerial;
 
         void Start()
         {
@@ -262,6 +263,16 @@ namespace Unity.FPS.Gameplay
             }
 
             return 0f;
+        }
+
+        public bool GetShieldInput()
+        {
+            if (CanProcessInput())
+            {
+                return Input.GetKey(KeyCode.LeftShift);
+            }
+
+            return false;
         }
     }
 }

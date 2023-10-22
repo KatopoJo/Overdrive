@@ -1,6 +1,7 @@
 ﻿using Unity.FPS.Game;
 using UnityEngine;
 using UnityEngine.Events;
+using System.Linq;
 
 namespace Unity.FPS.Gameplay
 {
@@ -96,11 +97,18 @@ namespace Unity.FPS.Gameplay
         [Tooltip("Damage recieved when falling at the maximum speed")]
         public float FallDamageAtMaxSpeed = 50f;
 
+        [Tooltip("VFX for ground pound shockwave")]
+        public GameObject GroundPoundVfx;
+
+        [Tooltip("VFX for shield")]
+        public GameObject ShieldBubble;
+
         public UnityAction<bool> OnStanceChanged;
 
         public Vector3 CharacterVelocity { get; set; }
         public bool IsGrounded { get; private set; }
         public bool HasJumpedThisFrame { get; private set; }
+        public int NumJumps { get; private set; }
         public bool IsDead { get; private set; }
         public bool IsCrouching { get; private set; }
 
@@ -122,6 +130,7 @@ namespace Unity.FPS.Gameplay
         CharacterController m_Controller;
         PlayerWeaponsManager m_WeaponsManager;
         Actor m_Actor;
+        Damageable damageable;
         Vector3 m_GroundNormal;
         Vector3 m_CharacterVelocity;
         Vector3 m_LatestImpactSpeed;
@@ -132,6 +141,13 @@ namespace Unity.FPS.Gameplay
 
         const float k_JumpGroundingPreventionTime = 0.2f;
         const float k_GroundCheckDistanceInAir = 0.07f;
+
+        int dashforward;
+        int dashleft;
+        int dashback;
+        int dashright;
+
+        int Heat;
 
         void Awake()
         {
@@ -168,6 +184,34 @@ namespace Unity.FPS.Gameplay
             // force the crouch state to false when starting
             SetCrouchingState(false, true);
             UpdateCharacterHeight(true);
+
+            damageable = GetComponent<Damageable>();
+
+            NumJumps = 0;
+            dashforward = 0; dashright = 0;  dashleft = 0; dashback = 0;
+            Heat = 1000;
+
+            Mesh mesh = ShieldBubble.GetComponent<MeshFilter>().mesh;
+            mesh.triangles = mesh.triangles.Reverse().ToArray();
+            ShieldBubble.GetComponent<MeshFilter>().mesh = mesh;
+            ShieldBubble.SetActive(false);
+        }
+
+        private void FixedUpdate()
+        {
+            //shielding
+            if (m_InputHandler.GetShieldInput() && Heat > 0)
+            {
+                damageable.ShieldOn();
+                Heat--;
+                Debug.Log("Shield" + Heat.ToString());
+                ShieldBubble.SetActive(true);
+            }
+            else
+            {
+                damageable.ShieldOff();
+                ShieldBubble.SetActive(false);
+            }
         }
 
         void Update()
@@ -187,7 +231,7 @@ namespace Unity.FPS.Gameplay
             if (IsGrounded && !wasGrounded)
             {
                 // Fall damage
-                float fallSpeed = -Mathf.Min(CharacterVelocity.y, m_LatestImpactSpeed.y);
+                /*float fallSpeed = -Mathf.Min(CharacterVelocity.y, m_LatestImpactSpeed.y);
                 float fallSpeedRatio = (fallSpeed - MinSpeedForFallDamage) /
                                        (MaxSpeedForFallDamage - MinSpeedForFallDamage);
                 if (RecievesFallDamage && fallSpeedRatio > 0f)
@@ -199,10 +243,29 @@ namespace Unity.FPS.Gameplay
                     AudioSource.PlayOneShot(FallDamageSfx);
                 }
                 else
-                {
+                {*/
                     // land SFX
-                    AudioSource.PlayOneShot(LandSfx);
+                AudioSource.PlayOneShot(LandSfx);
+                //}
+                if (NumJumps == 3)
+                { //ground pound shockwave
+                    var vfx = Instantiate(GroundPoundVfx, transform.position, Quaternion.identity);
+                    Vector3 scale = vfx.transform.localScale;
+                    vfx.transform.localScale = new Vector3(scale.x * 2f, scale.y * 1.5f, scale.z * 2f);
+                    Vector3 pos = vfx.transform.position;
+                    vfx.transform.position = new Vector3(pos.x, pos.y + scale.y * 0.25f, pos.z);
+                    Destroy(vfx, 50f);
+
+                    Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5);
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        Damageable damageable = hitCollider.GetComponent<Damageable>();
+                        if (damageable && hitCollider.gameObject != gameObject) {
+                            damageable.InflictDamage(40f, false, gameObject);
+                        }
+                    }
                 }
+                NumJumps = 0;
             }
 
             // crouching
@@ -214,6 +277,37 @@ namespace Unity.FPS.Gameplay
             UpdateCharacterHeight(false);
 
             HandleCharacterMovement();
+        }
+
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            if (NumJumps == 3) //ground pounding
+            {
+                Debug.Log("Ground Pound On Enemy");
+                Damageable isDamageable = hit.gameObject.GetComponent<Damageable>();
+                if (isDamageable)
+                { //you hit an enemy, so execute ground pound now, don't wait for the ground
+                    var vfx = Instantiate(GroundPoundVfx, transform.position, Quaternion.identity);
+                    Vector3 scale = vfx.transform.localScale;
+                    vfx.transform.localScale = new Vector3(scale.x * 2f, scale.y * 1.5f, scale.z * 2f);
+                    Vector3 pos = vfx.transform.position;
+                    vfx.transform.position = new Vector3(pos.x, pos.y + scale.y * 0.25f, pos.z);
+                    Destroy(vfx, 50f);
+
+                    Collider[] hitColliders = Physics.OverlapSphere(transform.position, 5);
+                    foreach (var hitCollider in hitColliders)
+                    {
+                        Damageable damageable = hitCollider.GetComponent<Damageable>();
+                        if (damageable && hitCollider.gameObject != gameObject)
+                        {
+                            damageable.InflictDamage(40f, false, gameObject);
+                        }
+                    }
+                    NumJumps++; //can't keep ground pounding after
+                }
+            }
+            
+
         }
 
         void OnDie()
@@ -317,6 +411,7 @@ namespace Unity.FPS.Gameplay
                     // jumping
                     if (IsGrounded && m_InputHandler.GetJumpInputDown())
                     {
+                        NumJumps++;
                         // force the crouch state to false
                         if (SetCrouchingState(false, false))
                         {
@@ -354,6 +449,58 @@ namespace Unity.FPS.Gameplay
                 // handle air movement
                 else
                 {
+                    //double jumping
+                    if (m_InputHandler.GetJumpInputDown() && NumJumps == 1 && !HasJumpedThisFrame)
+                    {
+                        Debug.Log("Double Jump");
+                        NumJumps++;
+                        // force the crouch state to false
+                        if (SetCrouchingState(false, false))
+                        {
+                            // start by canceling out the vertical component of our velocity
+                            // CharacterVelocity = new Vector3(CharacterVelocity.x, 0f, CharacterVelocity.z);
+
+                            // then, add the jumpSpeed value upwards
+                            CharacterVelocity += Vector3.up * JumpForce;
+
+                            // play sound
+                            AudioSource.PlayOneShot(JumpSfx);
+
+                            // remember last time we jumped because we need to prevent snapping to ground for a short time
+                            m_LastTimeJumped = Time.time;
+                            HasJumpedThisFrame = true;
+
+                            // Force grounding to false
+                            IsGrounded = false;
+                            m_GroundNormal = Vector3.up;
+                        }
+                    } //ground pound
+                    else if (m_InputHandler.GetJumpInputDown() && NumJumps == 2 && !HasJumpedThisFrame)
+                    {
+                        Debug.Log("Ground Pound");
+                        NumJumps++;
+                        // force the crouch state to false
+                        if (SetCrouchingState(false, false))
+                        {
+                            // start by canceling out the vertical component of our velocity
+                            // CharacterVelocity = new Vector3(CharacterVelocity.x, 0f, CharacterVelocity.z);
+
+                            // then, add the jumpSpeed value upwards
+                            CharacterVelocity -= Vector3.up * JumpForce * 2;
+
+                            // play sound
+                            AudioSource.PlayOneShot(JumpSfx);
+
+                            // remember last time we jumped because we need to prevent snapping to ground for a short time
+                            m_LastTimeJumped = Time.time;
+                            HasJumpedThisFrame = true;
+
+                            // Force grounding to false
+                            IsGrounded = false;
+                            m_GroundNormal = Vector3.up;
+                        }
+                    }
+
                     // add air acceleration
                     CharacterVelocity += worldspaceMoveInput * AccelerationSpeedInAir * Time.deltaTime;
 

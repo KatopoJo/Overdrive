@@ -362,7 +362,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8746678193447392789}
   - component: {fileID: 6145509692674227223}
-  - component: {fileID: 814417836257332542}
+  - component: {fileID: 8665223967289274466}
   - component: {fileID: 1360575517897679518}
   - component: {fileID: 298744117520805562}
   - component: {fileID: 783424908873546082}
@@ -414,7 +414,7 @@ MonoBehaviour:
   TriggerAxisThreshold: 0.4
   InvertYAxis: 0
   InvertXAxis: 0
---- !u!114 &814417836257332542
+--- !u!114 &8665223967289274466
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -438,7 +438,7 @@ MonoBehaviour:
   MaxSpeedCrouchedRatio: 0.5
   MaxSpeedInAir: 10
   AccelerationSpeedInAir: 25
-  SprintSpeedModifier: 1.5
+  SprintSpeedModifier: 2
   KillHeight: -50
   RotationSpeed: 200
   AimingRotationMultiplier: 0.4
