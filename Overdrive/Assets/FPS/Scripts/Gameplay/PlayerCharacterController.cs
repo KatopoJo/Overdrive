@@ -103,16 +103,6 @@ namespace Unity.FPS.Gameplay
         [Tooltip("VFX for shield")]
         public GameObject ShieldBubble;
 
-        [Header("Environment")]
-        [Tooltip("Damage recieved while standing on lava (per ground check)")]
-        public float LavaDamage = 0.05f;
-
-        [Tooltip("Maximum movement speed while on lava")] [Range(0, 1)]
-        public float MaxLavaGroundSpeed = 0.2f;
-
-        [Tooltip("Maximum movement speed while on a boost pad")]
-        public float MaxBoostPadGroundSpeed = 5f;
-
         public UnityAction<bool> OnStanceChanged;
 
         public Vector3 CharacterVelocity { get; set; }
@@ -121,8 +111,6 @@ namespace Unity.FPS.Gameplay
         public int NumJumps { get; private set; }
         public bool IsDead { get; private set; }
         public bool IsCrouching { get; private set; }
-        public bool IsOnLava { get; set; }
-        public bool IsOnBoostPad { get; set; }
 
         public float RotationMultiplier
         {
@@ -318,6 +306,8 @@ namespace Unity.FPS.Gameplay
                     NumJumps++; //can't keep ground pounding after
                 }
             }
+            
+
         }
 
         void OnDie()
@@ -338,8 +328,6 @@ namespace Unity.FPS.Gameplay
 
             // reset values before the ground check
             IsGrounded = false;
-            IsOnLava = false;
-            IsOnBoostPad = false;
             m_GroundNormal = Vector3.up;
 
             // only try to detect ground if it's been a short amount of time since last jump; otherwise we may snap to the ground instantly after we try jumping
@@ -359,21 +347,6 @@ namespace Unity.FPS.Gameplay
                         IsNormalUnderSlopeLimit(m_GroundNormal))
                     {
                         IsGrounded = true;
-
-                        if (hit.collider.CompareTag("Lava"))
-                        {
-                            Debug.Log("On lava");
-                            IsOnLava = true;
-                            // m_Health.TakeDamage(LavaDamage, hit.collider.gameObject);
-                            // Use the line above if you want lava damage to ignore the shield, use the line below to consider the shield
-                            damageable.InflictDamage(LavaDamage, false, hit.collider.gameObject);
-                        }
-
-                        if (hit.collider.CompareTag("Boost Pad"))
-                        {
-                            Debug.Log("On boost pad");
-                            IsOnBoostPad = true;
-                        }
 
                         // handle snapping to the ground
                         if (hit.distance > m_Controller.skinWidth)
@@ -428,10 +401,6 @@ namespace Unity.FPS.Gameplay
                     // reduce speed if crouching by crouch speed ratio
                     if (IsCrouching)
                         targetVelocity *= MaxSpeedCrouchedRatio;
-                    if (IsOnLava)
-                        targetVelocity *= MaxLavaGroundSpeed;
-                    if (IsOnBoostPad)
-                        targetVelocity *= MaxBoostPadGroundSpeed;
                     targetVelocity = GetDirectionReorientedOnSlope(targetVelocity.normalized, m_GroundNormal) *
                                      targetVelocity.magnitude;
 
