@@ -7527,7 +7527,7 @@ GameObject:
   - component: {fileID: 279838054}
   m_Layer: 0
   m_Name: Cube (41)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11144,7 +11144,7 @@ GameObject:
   - component: {fileID: 415854926}
   m_Layer: 0
   m_Name: Cube (276)
-  m_TagString: Boost Pad
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14856,7 +14856,7 @@ GameObject:
   - component: {fileID: 516296935}
   m_Layer: 0
   m_Name: Cube (452)
-  m_TagString: Boost Pad
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -14953,7 +14953,7 @@ GameObject:
   - component: {fileID: 519785421}
   m_Layer: 0
   m_Name: Cube (476)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -18102,7 +18102,7 @@ GameObject:
   - component: {fileID: 607003982}
   m_Layer: 0
   m_Name: Cube (453)
-  m_TagString: Boost Pad
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -19256,7 +19256,7 @@ GameObject:
   - component: {fileID: 648924720}
   m_Layer: 0
   m_Name: Cube (275)
-  m_TagString: Boost Pad
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -21173,7 +21173,7 @@ GameObject:
   - component: {fileID: 712634813}
   m_Layer: 0
   m_Name: Cube (148)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -22919,7 +22919,7 @@ GameObject:
   - component: {fileID: 759250292}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -33787,7 +33787,7 @@ GameObject:
   - component: {fileID: 1137776047}
   m_Layer: 0
   m_Name: Cube (173)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -41115,7 +41115,7 @@ GameObject:
   - component: {fileID: 1386505753}
   m_Layer: 0
   m_Name: Cube (40)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44274,7 +44274,7 @@ GameObject:
   - component: {fileID: 1471401625}
   m_Layer: 0
   m_Name: Cube (175)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -46887,7 +46887,7 @@ GameObject:
   - component: {fileID: 1554256986}
   m_Layer: 0
   m_Name: Cube (3)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -50609,7 +50609,7 @@ GameObject:
   - component: {fileID: 1687208607}
   m_Layer: 0
   m_Name: Cube (174)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -56032,7 +56032,7 @@ GameObject:
   - component: {fileID: 1860603711}
   m_Layer: 0
   m_Name: Cube (1)
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -57717,7 +57717,7 @@ GameObject:
   - component: {fileID: 1919369194}
   m_Layer: 0
   m_Name: Cube (272)
-  m_TagString: Boost Pad
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58881,7 +58881,7 @@ GameObject:
   - component: {fileID: 1959901662}
   m_Layer: 0
   m_Name: Cube
-  m_TagString: Lava
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -65287,22 +65287,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3122855503829242450, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3122855503829242450, guid: 761cdc9e4e883334cbdcea062d0befa7,
-        type: 3}
       propertyPath: m_StepOffset
       value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 7253983127304857660, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
       propertyPath: m_Name
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 7253983127304857660, guid: 761cdc9e4e883334cbdcea062d0befa7,
-        type: 3}
-      propertyPath: m_TagString
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 7267769575523271762, guid: 761cdc9e4e883334cbdcea062d0befa7,
@@ -65314,21 +65304,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Materials.Array.size
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7564421590499083540, guid: 761cdc9e4e883334cbdcea062d0befa7,
-        type: 3}
-      propertyPath: m_Size.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7564421590499083540, guid: 761cdc9e4e883334cbdcea062d0befa7,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7564421590499083540, guid: 761cdc9e4e883334cbdcea062d0befa7,
-        type: 3}
-      propertyPath: m_Center.y
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8665223967289274466, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
@@ -65346,12 +65321,6 @@ PrefabInstance:
       propertyPath: MaxSpeedOnGround
       value: 8
       objectReference: {fileID: 0}
-<<<<<<< HEAD
-    - target: {fileID: 8665223967289274466, guid: 761cdc9e4e883334cbdcea062d0befa7,
-        type: 3}
-      propertyPath: MaxLavaGroundSpeed
-      value: 0.2
-=======
     - target: {fileID: 8694137560673455815, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -65361,7 +65330,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.11
->>>>>>> main
       objectReference: {fileID: 0}
     - target: {fileID: 8746678193447392789, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
@@ -65386,22 +65354,22 @@ PrefabInstance:
     - target: {fileID: 8746678193447392789, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: -0.9995994
       objectReference: {fileID: 0}
     - target: {fileID: 8746678193447392789, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8746678193447392789, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0.02830474
       objectReference: {fileID: 0}
     - target: {fileID: 8746678193447392789, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8746678193447392789, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
@@ -65411,7 +65379,7 @@ PrefabInstance:
     - target: {fileID: 8746678193447392789, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
+      value: 363.244
       objectReference: {fileID: 0}
     - target: {fileID: 8746678193447392789, guid: 761cdc9e4e883334cbdcea062d0befa7,
         type: 3}
