@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using System.Linq;
+using static UnityEditor.PlayerSettings;
 
 namespace Unity.FPS.Gameplay
 {
@@ -104,6 +105,12 @@ namespace Unity.FPS.Gameplay
         public GameObject ShieldBubble;
 
         [Header("Environment")]
+        [Tooltip("VFX for lava damage")]
+        public GameObject LavaDamageVfx;
+
+        [Tooltip("Sound played when taking damage from lava")]
+        public AudioClip LavaDamageSfx;
+
         [Tooltip("Damage recieved while standing on lava (per ground check)")]
         public float LavaDamage = 0.05f;
 
@@ -339,7 +346,7 @@ namespace Unity.FPS.Gameplay
 
             // reset values before the ground check
             IsGrounded = false;
-            IsOnLava = false;
+            // IsOnLava = false;
             IsOnBoostPad = false;
             m_GroundNormal = Vector3.up;
 
@@ -364,10 +371,23 @@ namespace Unity.FPS.Gameplay
                         if (hit.collider.CompareTag("Lava"))
                         {
                             Debug.Log("On lava");
+                            if (!IsOnLava) // Will only run the on first contact basically
+                            {
+                                AudioSource.PlayClipAtPoint(LavaDamageSfx, this.transform.position);
+                                var lava_vfx = Instantiate(LavaDamageVfx, transform.position, Quaternion.identity);
+                                Vector3 vfx_scale = lava_vfx.transform.localScale;
+                                lava_vfx.transform.localScale = new Vector3(vfx_scale.x * 15f, vfx_scale.y * 15f, vfx_scale.z * 15f);
+                                Vector3 vfx_pos = lava_vfx.transform.position;
+                                lava_vfx.transform.position = new Vector3(vfx_pos.x, vfx_pos.y + 1.25f, vfx_pos.z);
+                                Destroy(lava_vfx, 5f);
+                            }
                             IsOnLava = true;
                             // m_Health.TakeDamage(LavaDamage, hit.collider.gameObject);
                             // Use the line above if you want lava damage to ignore the shield, use the line below to consider the shield
                             damageable.InflictDamage(LavaDamage, false, hit.collider.gameObject);
+                        } else
+                        {
+                            IsOnLava = false;
                         }
 
                         if (hit.collider.CompareTag("Boost Pad"))
